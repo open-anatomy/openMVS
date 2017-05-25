@@ -47,6 +47,7 @@
 #include <vcg/complex/algorithms/clean.h>
 #include <vcg/complex/algorithms/smooth.h>
 #include <vcg/complex/algorithms/hole.h>
+#include <vcg/complex/algorithms/polygon_support.h>
 // VCG: mesh simplification
 #include <vcg/complex/algorithms/update/position.h>
 #include <vcg/complex/algorithms/update/bounding.h>
@@ -92,6 +93,26 @@ void Mesh::EmptyExtra()
 	faceTexcoords.Empty();
 	textureDiffuse.release();
 } // EmptyExtra
+/*----------------------------------------------------------------*/
+
+
+// compute the axis-aligned bounding-box of the mesh
+Mesh::Box Mesh::GetAABB() const
+{
+	Box box(true);
+	for (const Vertex& X: vertices)
+		box.InsertFull(X);
+	return box;
+}
+// same, but only for vertices inside the given AABB
+Mesh::Box Mesh::GetAABB(const Box& bound) const
+{
+	Box box(true);
+	for (const Vertex& X: vertices)
+		if (bound.Intersects(X))
+			box.InsertFull(X);
+	return box;
+}
 /*----------------------------------------------------------------*/
 
 

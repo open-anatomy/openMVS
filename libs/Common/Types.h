@@ -28,7 +28,11 @@
 #include <string.h>
 #endif
 #ifdef _SUPPORT_CPP11
+#ifdef __clang__
+#include <stdint.h>
+#else
 #include <cstdint>
+#endif
 #include <cstddef>
 #include <type_traits>
 #include <initializer_list>
@@ -113,7 +117,7 @@ namespace boost { void throw_exception(std::exception const&); }
 #ifdef _USE_EIGEN
 #if defined(_MSC_VER)
 #pragma warning (push)
-#pragma warning (disable : 4244) // warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
+#pragma warning (disable : 4244) // 'argument': conversion from '__int64' to 'int', possible loss of data
 #endif
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -128,6 +132,8 @@ namespace boost { void throw_exception(std::exception const&); }
 #endif
 #endif
 
+#pragma push_macro("free")
+#undef free
 #include <opencv2/core/version.hpp>
 #if CV_MAJOR_VERSION > 2 || CV_MINOR_VERSION > 3
 #include <opencv2/opencv_modules.hpp>
@@ -141,6 +147,7 @@ namespace cv { namespace gpu = cuda; }
 #include <opencv2/gpu/gpu.hpp>
 #endif
 #endif
+#pragma pop_macro("free")
 
 #ifdef _USE_SSE
 #include <xmmintrin.h>
@@ -230,7 +237,7 @@ typedef signed int			INT;
 typedef unsigned int		UINT;
 typedef long				LONG;
 
-typedef LONG				HRESULT;
+typedef int32_t				HRESULT;
 
 typedef CHAR*				LPSTR;
 typedef const CHAR*			LPCSTR;

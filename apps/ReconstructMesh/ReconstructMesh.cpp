@@ -61,7 +61,7 @@ float fQualityFactor;
 float fDecimateMesh;
 float fRemoveSpurious;
 bool bRemoveSpikes;
-bool gclowdensity; 
+bool gclowdensity;
 unsigned nCloseHoles;
 unsigned nSmoothMesh;
 unsigned nArchiveType;
@@ -108,7 +108,7 @@ bool Initialize(size_t argc, LPCTSTR* argv)
 		("min-point-distance,d", boost::program_options::value<float>(&OPT::fDistInsert)->default_value(2.f), "minimum distance in pixels between the projection of two 3D points to consider them different while triangulating (0 - disabled)")
 		("constant-weight", boost::program_options::value<bool>(&OPT::bUseConstantWeight)->default_value(true), "considers all view weights 1 instead of the available weight")
 		("free-space-support,f", boost::program_options::value<bool>(&OPT::bUseFreeSpaceSupport)->default_value(false), "exploits the free-space support in order to reconstruct weakly-represented surfaces")
-("gclowdensity", boost::program_options::value<bool>(&OPT::gclowdensity)->default_value(false), "flag controlling low density mode for graph-cut. (false by default).")
+		("gclowdensity", boost::program_options::value<bool>(&OPT::gclowdensity)->default_value(false), "flag controlling low density mode for graph-cut. (false by default).")
 		("thickness-factor", boost::program_options::value<float>(&OPT::fThicknessFactor)->default_value(2.f), "multiplier adjusting the minimum thickness considered during visibility weighting")
 		("quality-factor", boost::program_options::value<float>(&OPT::fQualityFactor)->default_value(1.f), "multiplier adjusting the quality weight considered during graph-cut")
 		;
@@ -251,7 +251,7 @@ int main(int argc, LPCTSTR* argv)
 				if (!imageData.IsValid())
 					continue;
 				// reset image resolution
-				if (FAILED(imageData.ReloadImage(0, false))) {
+				if (!imageData.ReloadImage(0, false)) {
 					#ifdef RECMESH_USE_OPENMP
 					bAbort = true;
 					#pragma omp flush (bAbort)
